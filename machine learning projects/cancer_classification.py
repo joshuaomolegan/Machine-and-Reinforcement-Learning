@@ -10,6 +10,8 @@ column on the data set resulting in a total of 32 attributes.
 
 Initially I attempted to remove highly correlated features (e.g. perimeter and radius) but after playing around with the dataset 
 I realised that I got the best results by inputting the entire dataset into my network.
+
+Dataset can be found here: http://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+%28Diagnostic%29
 """
 
 from sklearn import datasets, preprocessing, model_selection
