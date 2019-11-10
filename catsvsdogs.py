@@ -21,6 +21,7 @@ os.mkdir(cat_val_dir)
 os.mkdir(dog_val_dir)
 os.mkdir(cat_train_dir)
 os.mkdir(dog_train_dir)
+
 fnames = ["cat.{}.jpg".format(i) for i in range(2500)]
 for fname in fnames:
   src = os.path.join(original_dir, fname)
@@ -69,9 +70,7 @@ val_generator = train_datagen.flow_from_directory(
 		batch_size=20,
 		class_mode="binary")
 
-conv_base = VGG16(weights='imagenet',
-									include_top=False,
-									input_shape=(150, 150, 3))
+conv_base = VGG16(weights='imagenet', include_top=False, input_shape=(150, 150, 3))
 
 model = models.Sequential()
 model.add(conv_base)
