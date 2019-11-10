@@ -110,8 +110,6 @@ def softmax_experiment(bandit, num_pulls, temperature):
       bandit.update_est(action, R)
       #Keeps a record of the total regret
       history.append(bandit.regret)
-      #decay the temperature
-      #temperature = temperature * 0.99
   return np.array(history)
 
 def ucb1_experiment(bandit, num_pulls):
