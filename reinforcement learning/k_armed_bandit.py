@@ -13,7 +13,7 @@ import random
 
 class Bandit:
   def __init__(self):
-    #Creates 10 arms, each with a normally distributed payout rate (mean = 0, standard deviation = 1)
+    #Creates 10 arms, each with a random rewrd value from a normal distibution with a standard deviation of 1 amd a mean of 0
     self.arm_values = np.random.normal(0, 1, 10)
     #To keep track of how many times each arm was pulled
     self.k = np.zeros(10)
@@ -24,8 +24,7 @@ class Bandit:
 
   def get_reward(self, action):
     #Gets the value of the reward then adds noise it, which is also normally distributed
-    noise = np.random.normal(0, 1)
-    reward = self.arm_values[action] #+ noise
+    reward = self.arm_values[action]
     return reward
     
 
@@ -43,7 +42,7 @@ class Bandit:
     #Creates the softmax distribution, which is proportional to the estimated rewards of each arm
     pi = np.exp(self.est_values / temperature) / np.sum(np.exp(self.est_values / temperature))
     #Picks each arm using this softmax distribution
-    return np.random.choice(10, p=pi)
+    return np.random.choice(range(10),p=pi)
 
   def choose_ucb1(self, current_pull_num):
     #Implementation of the Upper Confidence Bound 1 algorithm
@@ -62,17 +61,29 @@ class Bandit:
 
 def eps_greedy_experiment(bandit, num_pulls, epsilon):
   history = []
+  history = []
   for i in range(num_pulls):
-    #Decides wheter to explore or exploit
-    action = bandit.choose_eps_greedy(epsilon)
-    #Gets the reward of the pulled arm
-    R = bandit.get_reward(action)
-    #Updates the total regret
-    bandit.regret += (max(bandit.arm_values) - R)
-    #Updates the estimated value of the pulled arm based on the reward
-    bandit.update_est(action, R)
-    #Keeps a record of the total regret
-    history.append(bandit.regret)
+    if i == 1:
+      #Pull each arm once at the start
+      for i in range(10):
+        R = bandit.get_reward(i)
+        #Updates the total regret
+        bandit.regret += (max(bandit.arm_values) - R)
+        #Updates the estimated value of the pulled arm based on the reward
+        bandit.update_est(action, R)
+        #Keeps a record of the total regret
+        history.append(bandit.regret)
+    else:
+      #Decides which arm to pull
+      action = bandit.choose_eps_greedy(i)
+      #Gets the reward of the pulled arm
+      R = bandit.get_reward(action)
+      #Updates the total regret
+      bandit.regret += (max(bandit.arm_values) - R)
+      #Updates the estimated value of the pulled arm based on the reward
+      bandit.update_est(action, R)
+      #Keeps a record of the total regret
+      history.append(bandit.regret)
   return np.array(history)
 
 def softmax_experiment(bandit, num_pulls, temperature):
@@ -99,6 +110,8 @@ def softmax_experiment(bandit, num_pulls, temperature):
       bandit.update_est(action, R)
       #Keeps a record of the total regret
       history.append(bandit.regret)
+      #decay the temperature
+      #temperature = temperature * 0.99
   return np.array(history)
 
 def ucb1_experiment(bandit, num_pulls):
@@ -129,6 +142,7 @@ def ucb1_experiment(bandit, num_pulls):
 
 
 num_pulls = 1000
+print(Bandit().arm_values)
 eps_greedy = eps_greedy_experiment(Bandit(), num_pulls, 0.1)
 softmax = softmax_experiment(Bandit(), num_pulls, 0.1)
 UCB1 = ucb1_experiment(Bandit(), num_pulls)
