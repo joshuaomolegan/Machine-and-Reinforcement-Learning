@@ -153,3 +153,9 @@ plt.xlabel("Number of Pulls")
 plt.ylabel("Total Regret")
 plt.legend()
 plt.show()
+
+"""
+Plotting the graph of the total regret after each pull yields expected results. Both epsilon greedy and softmax have linear
+total regret, although the gradient varies a large amount with the softmax function. Upper confidence bound has a logarithmic
+total regret.
+"""
