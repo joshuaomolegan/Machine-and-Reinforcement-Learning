@@ -157,5 +157,7 @@ plt.show()
 """
 Plotting the graph of the total regret after each pull yields expected results. Both epsilon greedy and softmax have linear
 total regret, although the gradient varies a large amount with the softmax function. Upper confidence bound has a logarithmic
-total regret.
+total regret. I also discovered that in some cases, the softmax algorithm found the optimal arm quite quickly and so the total
+stopped increasing. My guess is that the problem is quite simple due to each arm only ahving a single possible reward and for
+more complex reward distributions this wont happen as frequently
 """
